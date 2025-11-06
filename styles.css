@@ -1,0 +1,331 @@
+/* --- TEMA: TETRON OLYMPUS (MITOLOGIA GREGA) --- */
+
+/* CORES CHAVE
+   - Ouro/Amarelo Dourado: #FFD700 (Apolo)
+   - Azul Profundo/Mar: #004D99 (Poseidon)
+   - Roxo/Realeza: #800080 (Zeus/Dionísio)
+   - Mármore/Fundo Base: #1E1E1E 
+   - Destaque: #F0F0F0 (Mármore Claro)
+*/
+
+body {
+    
+    /* --- AJUSTE PARA O ONECOMPILER: Fundo com Gradiente Sólido Simulado --- */
+    /* Simula uma textura escura, dramática e imponente do Olimpo/Submundo */
+   body {
+    background-image: url('https://uploads.onecompiler.io/4428vwku6/443ryaesh/tela%20inicial.jpg') !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+    /* --- FIM DO AJUSTE --- */
+
+    color: #F0F0F0; /* Mármore Claro */
+    font-family: 'Georgia', serif; 
+    text-align: center;
+    padding: 20px;
+    min-height: 100vh; 
+    margin: 0;
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+}
+
+h1 {
+    color: #FFD700; /* Ouro de Apolo */
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.7); /* Brilho Dourado mais forte */
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 25px;
+}
+
+/* GRID PRINCIPAL (O PALCO DO OLIMPO) */
+#grid {
+    display: grid;
+    grid-template-columns: repeat(10, 20px); 
+    grid-template-rows: repeat(20, 20px); 
+    width: 200px;
+    height: 400px;
+    /* Fundo completamente opaco para o grid para contraste total */
+    background: #000; 
+    border: 5px solid #FFD700; 
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+.cell {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #333; 
+    box-sizing: border-box;
+    transition: background 0.1s;
+}
+
+/* CORES DOS TETROMINOES (Associadas aos Deuses/Elementos) */
+.block-I { background: #FFD700; border-color: #FFEA80; } /* I: Apolo (Dourado) */
+.block-O { background: #F0F0F0; border-color: #FFF; }    /* O: Mármore (Pureza) */
+.block-T { background: #800080; border-color: #A030A0; } /* T: Zeus/Realeza (Púrpura) */
+.block-S { background: #009900; border-color: #00CC00; } /* S: Deméter/Natureza (Verde) */
+.block-Z { background: #CC0000; border-color: #FF3333; } /* Z: Ares/Guerra (Vermelho) */
+.block-J { background: #004D99; border-color: #007ACC; } /* J: Poseidon/Mar (Azul Escuro) */
+.block-L { background: #FF8C00; border-color: #FFA500; } /* L: Hefesto/Fogo (Laranja/Bronze) */
+
+/* PAINEL DE CONTROLE (TEMPLO LATERAL) */
+#controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: flex-start;
+    padding: 25px;
+    border: 3px solid #F0F0F0;
+    border-radius: 10px;
+    background: #333; /* Fundo sólido para clareza */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); 
+    text-align: left;
+}
+
+#controls h2 {
+    margin-top: 0;
+    color: #FFD700;
+    border-bottom: 2px solid #555;
+    padding-bottom: 8px;
+    font-size: 1.5em;
+}
+
+/* Estilo para os textos de status */
+#controls p {
+    font-size: 1.2em;
+    font-weight: normal;
+    margin: 5px 0;
+}
+
+/* Destaque para os valores (O placar Dourado) */
+#score, #time, #record {
+    color: #FFD700; 
+    font-family: 'Courier New', monospace; 
+    font-size: 1.4em;
+    float: right;
+    font-weight: bold;
+}
+
+/* Botões (Pedras/Placas de Mármore) */
+button {
+    padding: 12px 18px;
+    font-size: 17px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background: #555;
+    color: #F0F0F0;
+    transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #FFD700;
+    color: #1E1E1E;
+    box-shadow: 0 0 10px #FFD700;
+}
+
+/* Input de nome no painel de controle */
+#player-name {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #777;
+    background: #444;
+    color: #F0F0F0;
+    width: 90%;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+/* --- ESTILOS DO PRÓXIMO BLOCO (NEXT PIECE) --- */
+.next-piece-container h3 {
+    margin-top: 15px;
+    color: #F0F0F0;
+    font-size: 1.2em;
+    border-bottom: 1px solid #555;
+    padding-bottom: 5px;
+}
+
+#next-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 15px);
+    grid-template-rows: repeat(4, 15px);
+    width: 60px;
+    height: 60px;
+    background: #222;
+    border: 2px solid #F0F0F0;
+    margin: 10px auto 20px auto; 
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Redefinir as células para o mini-grid */
+#next-grid > div {
+    width: 15px;
+    height: 15px;
+    border: 1px solid #333;
+    box-sizing: border-box;
+}
+/* Fim Estilos Next Block */
+
+
+/* --- ESTILOS GERAIS DE FLUXO DE TELA --- */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* --- ESTILOS DA TELA INICIAL (TEMPLO) --- */
+
+#start-screen {
+    background: #333;
+    border: 6px solid #FFD700;
+    border-radius: 12px;
+    padding: 50px;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5); 
+    text-align: center;
+    max-width: 450px;
+    width: 90%;
+}
+
+#start-screen h1 {
+    color: #FFD700;
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+#start-screen p {
+    color: #CCC;
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+#start-screen label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.2em;
+    color: #F0F0F0;
+}
+
+/* O input da tela inicial */
+#start-player-name {
+    padding: 12px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: 1px solid #777;
+    background: #444;
+    color: #F0F0F0;
+    width: 80%;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+#start-screen button {
+    display: block;
+    width: 100%;
+    margin: 15px 0;
+    padding: 15px 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#start-game-btn {
+    background: #800080;
+    color: #F0F0F0;
+}
+
+#start-game-btn:hover {
+    background: #A030A0;
+    box-shadow: 0 0 15px #800080;
+}
+
+
+/* --- ESTILOS DO MODAL (INSTRUÇÕES) --- */
+
+.modal {
+    position: fixed; 
+    z-index: 100; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #333;
+    margin: auto;
+    padding: 40px;
+    border: 3px solid #FFD700;
+    width: 80%;
+    max-width: 550px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+    text-align: left;
+}
+
+.modal-content h2 {
+    text-align: center;
+    color: #FFD700;
+    margin-top: 0;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #555;
+    font-size: 1.8em;
+}
+
+.controls-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.controls-list li {
+    background: #444;
+    padding: 10px;
+    margin: 8px 0;
+    border-left: 5px solid #800080;
+    border-radius: 4px;
+    font-size: 1.1em;
+}
+
+.close-btn {
+    color: #F0F0F0;
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #FFD700;
+}
+
+.modal-close-btn {
+    display: block;
+    width: 100%;
+    margin-top: 30px;
+    background: #004D99;
+    color: #F0F0F0;
+}
+
+.modal-close-btn:hover {
+    background: #007ACC;
+}
