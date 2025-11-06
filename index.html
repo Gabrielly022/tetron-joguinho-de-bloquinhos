@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Jogo de Bloquinhos 🎮</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    
+    <div id="start-screen">
+      
+        <h1>Jogo de Bloquinhos</h1>
+        <p>Um jogo clássico de encaixar peças!</p>
+        
+        <label for="start-player-name">Seu Nome:</label>
+        <input type="text" id="start-player-name" placeholder="Digite seu nome" maxlength="15" />
+        
+        <button id="start-game-btn">Começar Jogo</button>
+        <button id="show-instructions-btn">Instruções</button>
+    </div>
+
+    <div id="game-wrapper" class="hidden"> 
+        <h1>Jogo de Bloquinhos 🎮</h1>
+
+        <main class="container"> 
+            <div id="grid"></div>
+            
+            <aside id="controls">
+                <h2>Estatísticas</h2>
+                <p>Pontuação: <span id="score">0</span></p>
+                <p>Tempo: <span id="time">00:00</span></p>
+                <p>Recorde: <span id="record">Nenhum</span></p>
+                
+                <div class="next-piece-container">
+                    <h3>Próximo Bloco:</h3>
+                    <div id="next-grid"></div>
+                </div>
+                
+                <label for="player-name">Nome:</label>
+                <input type="text" id="player-name" placeholder="Nome do Jogador" maxlength="15" disabled /> 
+
+                <button id="start-btn">Iniciar</button>
+                <button id="pause-btn">Pausar</button>
+                <button id="restart-btn">Reiniciar</button>
+
+                <!-- Controle de Música -->
+                <div id="music-controls">
+                    <h3>🎵 Música de Fundo</h3>
+                    <button id="toggle-music-btn">Desligar Música</button>
+                    <label for="volume-range">Volume:</label>
+                    <input type="range" id="volume-range" min="0" max="1" step="0.01" value="0.5" />
+                </div>
+
+                <!-- Créditos dos Desenvolvedores -->
+                <div id="developers">
+                    <h3>Desenvolvedores 💻</h3>
+                    <ul>
+                        <li><a href="https://github.com/Gabrielly022" target="_blank"> Gabrielly </a></li>
+                        <li><a href="https://github.com/debsteffy13" target="_blank"> Déborah </a></li>
+                    </ul>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- Modal de instruções -->
+    <div id="modal-instructions" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>🎮 Como Jogar Jogo de Bloquinhos 🎮</h2>
+            
+            <p>O objetivo é encaixar as peças (Tetrominoes) que caem do topo para formar e limpar linhas horizontais completas.</p>
+            
+            <h3>Controles:</h3>
+            <ul class="controls-list">
+                <li>**Seta ESQUERDA:** Mover o bloco para a esquerda</li>
+                <li>**Seta DIREITA:** Mover o bloco para a direita</li>
+                <li>**Seta CIMA:** Girar o bloco (Rotação)</li>
+                <li>**Seta BAIXO:** Queda rápida (Soft Drop)</li>
+                <li>**ESPAÇO:** Queda instantânea (Hard Drop)</li> 
+            </ul>
+            
+            <h3>Pontuação:</h3>
+            <p>Limpar mais linhas de uma vez garante pontos extras! O Hard Drop também dá pontuação bônus.</p>
+            
+            <button class="modal-close-btn">Entendi! Voltar.</button>
+        </div>
+    </div>
+
+    <!-- Modal de pausa -->
+    <div id="modal-pause" class="modal hidden">
+        <div class="modal-content">
+            <h2>⏸ Jogo Pausado</h2>
+            <p>O jogo está pausado. Continue quando estiver pronto!</p>
+
+            <!-- Créditos dos desenvolvedores -->
+            <div id="developers-pause">
+                <h3>Desenvolvedores 💻</h3>
+                <ul>
+                    <li><a href="https://github.com/Gabrielly022" target="_blank"> Gabrielly </a></li>
+                    <li><a href="https://github.com/Gabrielly022" target="_blank"> Gabrielly </a></li>
+                </ul>
+            </div>
+
+            <button class="modal-close-btn">Continuar</button>
+        </div>
+    </div>
+
+    <!-- Música de fundo -->
+    <audio id="background-music" src="https://files.catbox.moe/q0hnsj.mp3" loop></audio>
+
+    <!-- Efeitos sonoros -->
+    <audio id="sound-drop" src="URL_DO_SEU_AUDIO_DE_QUEDA.mp3"></audio>
+    <audio id="sound-line" src="URL_DO_SEU_AUDIO_DE_LINHA_COMPLETA.mp3"></audio>
+    <audio id="sound-gameover" src="URL_DO_SEU_AUDIO_DE_GAMEOVER.mp3"></audio>
+
+    <script src="script.js"></script>
+    <script>
+        // Referências aos áudios
+        const music = document.getElementById('background-music');
+        const dropSound = document.getElementById('sound-drop');
+        const lineSound = document.getElementById('sound-line');
+        const gameoverSound = document.getElementById('sound-gameover');
+
+        // Começar música ao iniciar o jogo
+        document.getElementById('start-game-btn').addEventListener('click', () => {
+            music.volume = 0.5;
+            music.play().catch(() => console.log("Clique no botão para ativar o áudio"));
+        });
+
+        // Botão de ligar/desligar música
+        const toggleMusicBtn = document.getElementById('toggle-music-btn');
+        toggleMusicBtn.addEventListener('click', () => {
+            if (music.paused) {
+                music.play();
+                toggleMusicBtn.textContent = "Desligar Música";
+            } else {
+                music.pause();
+                toggleMusicBtn.textContent = "Ligar Música";
+            }
+        });
+
+        // Controle de volume
+        const volumeRange = document.getElementById('volume-range');
+        volumeRange.addEventListener('input', () => {
+            music.volume = volumeRange.value;
+        });
+
+        // Funções para efeitos sonoros
+        function playDrop() {
+            dropSound.currentTime = 0;
+            dropSound.play();
+        }
+
+        function playLine() {
+            lineSound.currentTime = 0;
+            lineSound.play();
+        }
+
+        function playGameOver() {
+            gameoverSound.currentTime = 0;
+            gameoverSound.play();
+        }
+
+        // Aqui você conecta as funções aos eventos do jogo
+        // Exemplo:
+        // onPieceDrop() { playDrop(); }
+        // onLineComplete() { playLine(); }
+        // onGameOver() { playGameOver(); }
+    </script>
+</body>
+</html>
